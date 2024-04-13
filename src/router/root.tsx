@@ -11,6 +11,7 @@ const root = createBrowserRouter([
     path: "/",
     element: (
       <Suspense fallback={Loading}>
+        
         <Main />
       </Suspense>
     ),

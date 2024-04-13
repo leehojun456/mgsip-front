@@ -24,11 +24,12 @@ function App() {
             Dashboard
           </a>
       </div>
-      
-      <header className="bg-white w-full border-b h-20">
+      <div className="flex flex-col w-full">
+      <header className="bg-white border-b h-20">
       <nav>dadsf</nav>
       </header>
       <RouterProvider router={root} />
+      </div>
     </div>
   );
 }
