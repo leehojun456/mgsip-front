@@ -4,7 +4,6 @@ import axios from "axios";
 // 서버의 상태를 설명하는 인터페이스
 interface ServerStatus {
   serverAddress: { ip: string; port: number };
-  onlineUser: any[];
   totalPlayer: number;
   cpuUsage: number;
   totalMemory: number;
@@ -14,7 +13,6 @@ interface ServerStatus {
 // 초기 상태
 export const initialStatus: ServerStatus = {
   serverAddress: { ip: "", port: 0 },
-  onlineUser: [],
   totalPlayer: 0,
   cpuUsage: 0,
   totalMemory: 0,
@@ -24,10 +22,12 @@ export const initialStatus: ServerStatus = {
 // 컨텍스트 생성
 export const GmodServerContext = createContext<{
   status: ServerStatus;
-  setStatus: React.Dispatch<React.SetStateAction<ServerStatus>>;
+  error: string | null;
+  loading: boolean;
 }>({
   status: initialStatus,
-  setStatus: () => {},
+  error: null,
+  loading: true,
 });
 
 // GmodServerProviderProps 인터페이스
@@ -42,8 +42,9 @@ const GmodServerProvider: React.FC<GmodServerProviderProps> = ({ children }) => 
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios.get("http://localhost:80/status")
+    axios.get("http://mgsip.xyz:80/status")
       .then((response) => {
+        console.log(response.status)
         if (response.status === 200) {
           const {serverAddress, cpuUsage, totalMemory, freeMemory } = response.data;
           setStatus((prevStatus) => ({
@@ -60,19 +61,12 @@ const GmodServerProvider: React.FC<GmodServerProviderProps> = ({ children }) => 
       .catch((error) => {
         console.error("Failed to fetch server status:", error);
         setError("Failed to fetch server status");
-        setLoading(false);
-      });
+      })
   }, []);
 
   return (
-    <GmodServerContext.Provider value={{ status, setStatus }}>
-      {loading ? (
-        <div>Loading...</div>
-      ) : error ? (
-        <div>Error: {error}</div>
-      ) : (
-        children
-      )}
+    <GmodServerContext.Provider value={{error , loading, status }}>
+        {children}
     </GmodServerContext.Provider>
   );
 };
