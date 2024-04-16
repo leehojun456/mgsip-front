@@ -4,6 +4,7 @@ import axios from "axios";
 // 서버의 상태를 설명하는 인터페이스
 interface ServerStatus {
   serverAddress: { ip: string; port: number };
+  serverName: string;
   totalPlayer: number;
   cpuUsage: number;
   totalMemory: number;
@@ -13,6 +14,7 @@ interface ServerStatus {
 // 초기 상태
 export const initialStatus: ServerStatus = {
   serverAddress: { ip: "", port: 0 },
+  serverName: "",
   totalPlayer: 0,
   cpuUsage: 0,
   totalMemory: 0,
@@ -36,20 +38,30 @@ export interface GmodServerProviderProps {
 }
 
 // GmodServerProvider 컴포넌트
-const GmodServerProvider: React.FC<GmodServerProviderProps> = ({ children }) => {
+const GmodServerProvider: React.FC<GmodServerProviderProps> = ({
+  children,
+}) => {
   const [status, setStatus] = useState<ServerStatus>(initialStatus);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios.get("http://mgsip.xyz:80/status")
+    axios
+      .get("http://mgsip.xyz:80/status")
       .then((response) => {
-        console.log(response.status)
+        console.log(response.status);
         if (response.status === 200) {
-          const {serverAddress, cpuUsage, totalMemory, freeMemory } = response.data;
+          const {
+            serverAddress,
+            serverName,
+            cpuUsage,
+            totalMemory,
+            freeMemory,
+          } = response.data;
           setStatus((prevStatus) => ({
             ...prevStatus,
             serverAddress,
+            serverName,
             cpuUsage,
             totalMemory,
             freeMemory,
@@ -61,12 +73,12 @@ const GmodServerProvider: React.FC<GmodServerProviderProps> = ({ children }) => 
       .catch((error) => {
         console.error("Failed to fetch server status:", error);
         setError("Failed to fetch server status");
-      })
+      });
   }, []);
 
   return (
-    <GmodServerContext.Provider value={{error , loading, status }}>
-        {children}
+    <GmodServerContext.Provider value={{ error, loading, status }}>
+      {children}
     </GmodServerContext.Provider>
   );
 };

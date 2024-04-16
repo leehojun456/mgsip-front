@@ -1,26 +1,31 @@
 import React, { useContext, useEffect } from "react";
 import { GmodServerContext } from "../contexts/GmodServerContext";
 import { SyncLoader } from "react-spinners";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const PlayerCount: React.FC = () => {
-    const globalState = useContext(GmodServerContext);
-console.log(globalState)
+  const globalState = useContext(GmodServerContext);
+  console.log(globalState);
 
-
-    return (
-        <div className="w-96 h-96 border rounded-md grid place-content-center gap-4">
-          {globalState.loading === false ?(          <>
-            <div className="text-2xl">Total Players</div>
-            <div className="text-9xl">{globalState.status.totalPlayer}</div>
-            <div>Online</div>
-            </>): (
-<><SyncLoader></SyncLoader></>
-          )}
-        </div>
-        
-    );
-
-}
+  return (
+    <div className="w-full bg-slate-50 rounded-md flex p-4 items-center gap-6">
+      {globalState.loading === false ? (
+        <>
+          <FontAwesomeIcon icon={["fas", "user"]} className="text-4xl" />
+          <div>
+            <div>Joinned Player</div>
+            <div className="font-bold text-2xl">
+              {globalState.status.totalPlayer}
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <SyncLoader></SyncLoader>
+        </>
+      )}
+    </div>
+  );
+};
 
 export default PlayerCount;
