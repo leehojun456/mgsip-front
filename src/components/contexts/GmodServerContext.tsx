@@ -4,6 +4,7 @@ import axios from "axios";
 // 서버의 상태를 설명하는 인터페이스
 interface ServerStatus {
   serverAddress: { ip: string; port: number };
+  status: number;
   serverName: string;
   totalPlayer: number;
   cpuUsage: number;
@@ -14,6 +15,7 @@ interface ServerStatus {
 // 초기 상태
 export const initialStatus: ServerStatus = {
   serverAddress: { ip: "", port: 0 },
+  status: 0,
   serverName: "",
   totalPlayer: 0,
   cpuUsage: 0,
@@ -46,34 +48,44 @@ const GmodServerProvider: React.FC<GmodServerProviderProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    axios
-      .get("http://mgsip.xyz:80/status")
-      .then((response) => {
-        console.log(response.status);
-        if (response.status === 200) {
-          const {
-            serverAddress,
-            serverName,
-            cpuUsage,
-            totalMemory,
-            freeMemory,
-          } = response.data;
-          setStatus((prevStatus) => ({
-            ...prevStatus,
-            serverAddress,
-            serverName,
-            cpuUsage,
-            totalMemory,
-            freeMemory,
-          }));
-          setLoading(false);
-          console.log(response.data);
-        }
-      })
-      .catch((error) => {
-        console.error("Failed to fetch server status:", error);
-        setError("Failed to fetch server status");
-      });
+    const fetchData = () => {
+      axios
+        .get("http://mgsip.xyz:80/status")
+        .then((response) => {
+          console.log(response.status);
+          if (response.status === 200) {
+            const {
+              serverAddress,
+              status,
+              serverName,
+              cpuUsage,
+              totalMemory,
+              freeMemory,
+            } = response.data;
+            setStatus((prevStatus) => ({
+              ...prevStatus,
+              serverAddress,
+              status,
+              serverName,
+              cpuUsage,
+              totalMemory,
+              freeMemory,
+            }));
+            setLoading(false);
+            console.log(response.data);
+          }
+        })
+        .catch((error) => {
+          console.error("Failed to fetch server status:", error);
+          setError("Failed to fetch server status");
+        });
+    };
+
+    fetchData();
+
+    const intervalId = setInterval(fetchData, 5000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   return (

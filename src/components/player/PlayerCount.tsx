@@ -20,9 +20,9 @@ const PlayerCount: React.FC = () => {
           </div>
         </>
       ) : (
-        <>
+        <div>
           <SyncLoader></SyncLoader>
-        </>
+        </div>
       )}
     </div>
   );
