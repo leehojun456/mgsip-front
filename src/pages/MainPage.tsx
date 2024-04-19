@@ -1,9 +1,17 @@
 import React from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from "react-tooltip";
+import ModalExample from "../components/servers/AddModal";
 
 const MainPage: React.FC = () => {
+  const modalRef = useRef<any>(); // ModalExample 컴포넌트의 ref
+
+  const handleOpenModal = () => {
+    modalRef.current.openModal(); // ModalExample 컴포넌트의 openModal 함수 호출
+  };
+
   return (
     <div className="h-full p-12 flex flex-col gap-12 w-full">
       <div className="font-bold text-5xl">Select Server</div>
@@ -14,19 +22,8 @@ const MainPage: React.FC = () => {
         <div className="bg-black min-w-72 h-48 rounded-md">fdfd</div>
         <div className="bg-black min-w-72 h-48 rounded-md">fdfd</div>
         <div className="bg-black min-w-72 h-48 rounded-md">fdfd</div>
-        <button className="hover:brightness-75 transition-all duration-300 bg-slate-50 min-w-72 h-48 rounded-md flex justify-center items-center my-anchor-elementnp">
-          <div>
-            {" "}
-            <FontAwesomeIcon
-              icon={["fas", "plus"]}
-              className="text-5xl text-slate-300"
-            />
-          </div>
-        </button>
+        <ModalExample></ModalExample>
       </div>
-      <Tooltip anchorSelect=".my-anchor-element" place="top" float={true}>
-        Add Server
-      </Tooltip>
     </div>
   );
 };

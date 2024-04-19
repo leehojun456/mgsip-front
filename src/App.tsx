@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import { RouterProvider } from "react-router-dom";
 import root from "./router/root";
 import "./App.css";
+import "react-tooltip/dist/react-tooltip.css";
 
 function App() {
   return (
