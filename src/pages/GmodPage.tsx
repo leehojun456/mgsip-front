@@ -6,7 +6,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 library.add(fas);
 
-const GmodPage: React.FC = () => {
+const ServerPage: React.FC = () => {
   return (
     <div className="h-full p-12 flex flex-col gap-12 w-full">
       <GmodServerProvider>
@@ -19,4 +19,4 @@ const GmodPage: React.FC = () => {
   );
 };
 
-export default GmodPage;
+export default ServerPage;

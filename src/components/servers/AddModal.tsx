@@ -9,6 +9,7 @@ const ModalExample: React.FC = () => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
   const [db, setdb] = useState<boolean>(false);
   const [dbConnect, setDbConnect] = useState<Boolean>(false);
+  const [serverConnect, setServerConnect] = useState<number>(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imgPath, setImgPath] = useState("");
   const [disSaveBtn, setDisSaveBtn] = useState<boolean>(true);
@@ -23,6 +24,26 @@ const ModalExample: React.FC = () => {
     serverPort: 0,
     serverGame: "",
   });
+
+  useEffect(() => {
+    ReactModal.setAppElement("#root"); // 루트 요소를 앱 요소로 설정
+    if (!modalIsOpen) {
+      // 모달이 닫힐 때 입력 내용, 이미지 경로, 파일 업로드를 초기화합니다.
+      setFormData({
+        serverName: "",
+        serverIp: "",
+        serverPort: 0,
+        serverGame: "",
+      });
+      setImgPath("");
+      setServerConnect(0);
+      setDbConnect(false);
+      if (fileInputRef.current) {
+        // 파일 업로드 input을 초기화합니다.
+        fileInputRef.current.value = "";
+      }
+    }
+  }, [modalIsOpen]);
 
   interface OptionType {
     value: string;
@@ -64,7 +85,30 @@ const ModalExample: React.FC = () => {
       });
   };
 
+  const checkConnect = () => {
+    setServerConnect(2);
+    axios
+      .get("http://localhost:8080/api/server", {
+        params: {
+          serverIp: formData.serverIp,
+          serverPort: formData.serverPort,
+        },
+      })
+      .then((response) => {
+        console.log("Server response:", response.data);
+        if (response.data === true) {
+          setServerConnect(1);
+        } else {
+          setServerConnect(3);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setServerConnect(0);
     const { name, value } = e.target;
 
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -137,9 +181,11 @@ const ModalExample: React.FC = () => {
             />
           </div>
         </button>
+
         <ReactModal
           style={{
             overlay: {
+              zIndex: "50",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -168,6 +214,7 @@ const ModalExample: React.FC = () => {
             <div className="flex flex-col justify-between overflow-scroll p-4 h-full">
               <div className="flex flex-col gap-6">
                 <button
+                  type="button"
                   className="hover:brightness-75 transition-all duration-300 bg-slate-50 h-48 rounded-md flex justify-center items-center relative my-anchor-elementnp"
                   onClick={handleFileButtonClick}
                 >
@@ -217,9 +264,32 @@ const ModalExample: React.FC = () => {
                   value={formData.serverPort}
                   onChange={(e) => onChangeHandler(e)}
                 ></input>
+                {serverConnect >= 1 && (
+                  <div
+                    className={`border p-2 rounded-md ${
+                      serverConnect === 1 &&
+                      "bg-green-200 border-green-300 text-green-600"
+                    }
+                    ${
+                      serverConnect === 2 &&
+                      "bg-yellow-200 border-yellow-300 text-yellow-600"
+                    } ${
+                      serverConnect === 3 &&
+                      "bg-red-200 border-red-300 text-red-600"
+                    }`}
+                  >
+                    {serverConnect === 1 && <div>Conected!</div>}
+                    {serverConnect === 2 && <div>Connecting...</div>}
+                    {serverConnect === 3 && <div>Connect Fail..</div>}
+                  </div>
+                )}
                 <button
-                  onClick={closeModal}
-                  className="bg-blue-500 p-2 rounded-md min-w-16 text-white"
+                  type="button"
+                  disabled={serverConnect >= 1 && serverConnect !== 3}
+                  onClick={checkConnect}
+                  className={`bg-blue-500 p-2 rounded-md min-w-16 text-white ${
+                    serverConnect >= 1 && serverConnect !== 3 && "brightness-75"
+                  }`}
                 >
                   Connect Test
                 </button>
@@ -241,10 +311,6 @@ const ModalExample: React.FC = () => {
                       className="border rounded-md h-12 px-4"
                       placeholder="Url"
                     />
-                    <input
-                      className="border rounded-md h-12 px-4"
-                      placeholder="database"
-                    ></input>
                     <input
                       className="border rounded-md h-12 px-4"
                       placeholder="Username"

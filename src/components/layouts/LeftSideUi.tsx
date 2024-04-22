@@ -14,32 +14,32 @@ const LeftSideUi: React.FC = () => {
         className={({ isActive }) =>
           isActive
             ? "bg-black"
-            : "mx-6 p-4 hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
+            : "p-4 hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
         }
       >
         Home
       </NavLink>
       <a
         href="#"
-        className="mx-6 p-4 hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
+        className="p-4 hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
       >
         Dashboard
       </a>
       <a
         href="#"
-        className="mx-6 p-4  hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
+        className="p-4  hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
       >
         Users
       </a>
       <a
         href="#"
-        className="mx-6 p-4 hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
+        className="p-4 hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
       >
         Dashboard
       </a>
       <a
         href="#"
-        className="mx-6 p-4 hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
+        className="p-4 hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
       >
         Dashboard
       </a>
@@ -54,15 +54,15 @@ const LeftSideUi: React.FC = () => {
           to={"/"}
           className={({ isActive }) =>
             isActive
-              ? "mx-6 p-4 bg-white text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
-              : "mx-6 p-4 hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
+              ? "p-4 bg-white text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
+              : "p-4 hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
           }
         >
           Home
         </NavLink>
         <a
           href="#"
-          className="mx-6 p-4 hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
+          className="p-4 hover:bg-white hover:text-blue-900 h-14 flex flex-col justify-center rounded-md transition-all duration-300"
         >
           Login
         </a>

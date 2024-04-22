@@ -5,7 +5,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import Layout from "../components/layouts/Layout";
 import MainPage from "../pages/MainPage";
-import GmodPage from "../pages/GmodPage";
+import ServerPage from "../pages/GmodPage";
 library.add(fas);
 
 const Loading = <div>Loading...</div>;
@@ -20,8 +20,8 @@ const root = createBrowserRouter([
         element: <MainPage />,
       },
       {
-        path: "gmod",
-        element: <GmodPage />,
+        path: ":serverId",
+        element: <ServerPage />,
       },
     ],
   },
